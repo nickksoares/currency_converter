@@ -1,15 +1,11 @@
 # currency_converter
 
-A new Flutter project.
-
+A project that uses the https://openexchangerates.org/ API to make a simple coversion, currently converting from BRL to USD.
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+A basic project to teach students the basic of using API and stateless widgets in flutter.
 
-A few resources to get you started if this is your first Flutter project:
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
 
 For help getting started with Flutter development, view the
 [online documentation](https://docs.flutter.dev/), which offers tutorials,
