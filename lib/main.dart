@@ -1,10 +1,9 @@
+import 'package:currency_converter/components/api_fetch.dart';
 import 'package:flutter/material.dart';
-import 'components/converter.dart';
-
+import 'components/drop_down_list.dart';
 void main(List<String> args) {
   runApp(const Converter());
 }
-
 class Converter extends StatelessWidget {
   const Converter({super.key});
 
@@ -56,28 +55,14 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final TextEditingController _dollarController = TextEditingController();
+  ///O valor que sera convertido
+  final TextEditingController _valueToConvert = TextEditingController();
+  
   double _convertedAmount = 0.0;
   double _currentRate = 0.0;
-  
 
-  Future makeSum(double value) async{
-    print('Chamando makeSum com valor $value');
-      try {
-        dynamic apiResponse = await fetchDollarInfo();
-        if (apiResponse is double) {
-          _currentRate = apiResponse;
-          print(_currentRate);
-          print(_currentRate*value);
-          return _currentRate*value;
-        } else {
-          throw Exception('Um erro ocorreu');
-        }
-      } catch (e) {
-        throw Exception('Erro ao buscar a taxa de câmbio: $e');
-      }
-    
-  }
+
+  
 
   @override
   Widget build(BuildContext context) {
@@ -89,26 +74,18 @@ class _MyHomePageState extends State<MyHomePage> {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
+          ElevatedButton(onPressed:() async { await fetchExchangeRates();} , child: const Text('Buscar  conversoes')),
           Padding(
             padding: const EdgeInsets.all(16.0),
-            child: TextField(
-              controller: _dollarController,
-              keyboardType: TextInputType.number,
-              decoration: const InputDecoration(
-                labelText: 'Valor em Dolar',
-                border: OutlineInputBorder(),
-              ),
-            ),
+            child: DropDownList(apiResponse: apiResponse)
           ),
+          
           ElevatedButton(
             onPressed: () async{
-              String dollarValue = _dollarController.text;
+              String dollarValue = _valueToConvert.text;
               double value = double.tryParse(dollarValue) ?? 0.00;
               try{
-                double result = await makeSum(value);
-                setState(() {
-                  _convertedAmount = result;
-                });
+               fetchExchangeRates();
               }catch (error){
                 throw Exception("Erro encontrado: $error");
               }
