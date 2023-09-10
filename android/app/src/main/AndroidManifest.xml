@@ -1,4 +1,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Permissão para acesso à Internet -->
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <!-- Permissão para acesso à rede (Wi-Fi ou dados móveis) -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <application
         android:label="currency_converter"
         android:name="${applicationName}"

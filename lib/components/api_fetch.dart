@@ -15,7 +15,7 @@ void apiResponseSetter(Map<String, dynamic> rates) {
 
 
 Future<Map<String, double>> fetchExchangeRates() async {
-  const String apiKey = '8e510b32fd18462480e2889309a22836';
+  const String apiKey = 'MY_API_KEY';
   String apiUrl =
       'https://openexchangerates.org/api/latest.json?app_id=$apiKey';
 

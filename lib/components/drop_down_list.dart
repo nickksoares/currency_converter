@@ -4,13 +4,16 @@ import 'package:flutter/material.dart';
 class DropDownList extends StatefulWidget {
   final Map<String, dynamic> apiResponse;
 
-  const DropDownList({required this.apiResponse});
+  const DropDownList({super.key, required this.apiResponse});
 
   @override
-  _DropDownListState createState() => _DropDownListState();
+  DropDownListState createState() => DropDownListState();
 }
 
-class _DropDownListState extends State<DropDownList> {
+String? selectedOption1Getter;
+String? selectedOption2Getter;
+
+class DropDownListState extends State<DropDownList> {
   Map<String, dynamic> data = {};
   String? selectedOption1;
   String? selectedOption2;
@@ -19,17 +22,17 @@ class _DropDownListState extends State<DropDownList> {
   void initState() {
     super.initState();
     fetchData();
-    print('InitState');
   }
 
   fetchData() async {
     await fetchExchangeRates();
-    print('Data Fetched');
     final fetchedData = apiResponse;
     setState(() {
       data = fetchedData;
       selectedOption1 = data.keys.isNotEmpty ? data.keys.first : null;
       selectedOption2 = data.keys.isNotEmpty ? data.keys.first : null;
+      selectedOption1Getter = selectedOption1;
+      selectedOption2Getter = selectedOption2;
     });
   }
 
@@ -42,10 +45,16 @@ class _DropDownListState extends State<DropDownList> {
           items: data.keys.map((String option) {
             return DropdownMenuItem<String>(
               value: option,
-              child: Text(option),
+              child: Text(
+                'Converter de $option',
+                style: Theme.of(context).textTheme.titleMedium,
+                selectionColor: Colors.black,
+              ),
             );
           }).toList(),
           onChanged: (String? newValue) {
+            selectedOption1Getter = newValue;
+
             setState(() {
               selectedOption1 = newValue;
             });
@@ -55,17 +64,31 @@ class _DropDownListState extends State<DropDownList> {
             value: selectedOption2,
             items: data.keys.map((String option) {
               return DropdownMenuItem<String>(
-                  value: option, child: Text(option));
+                value: option,
+                child: Text(
+                  'Converter para $option',
+                  style: Theme.of(context).textTheme.titleMedium,
+                  selectionColor: Colors.black,
+                ),
+              );
             }).toList(),
             onChanged: (String? newValue) {
+              selectedOption2Getter = newValue;
+
               setState(() {
                 selectedOption2 = newValue;
               });
             }),
-        const SizedBox(height: 20),
+        const SizedBox(
+          height: 20,
+          width: 100,
+        ),
         Text('Moeda 1: ${selectedOption1 ?? "None"}'),
         Text('Valor atual (1USD): ${data[selectedOption1 ?? ""] ?? "None"}'),
-        const SizedBox(height: 10,),
+        const SizedBox(
+          height: 10,
+          width: 100,
+        ),
         Text('Moeda 2: ${selectedOption2 ?? "None"}'),
         Text('Valor atual (1USD): ${data[selectedOption2 ?? ""] ?? "None"}'),
       ],

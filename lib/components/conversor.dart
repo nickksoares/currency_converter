@@ -1,27 +1,37 @@
-import 'api_fetch.dart';
+import 'api_fetch.dart' as api_fetch;
 
 
 
 
 ///Função que recebe duas chaves `String key1` e `String key2` correspondentes as siglas das moedas e retorna
 ///a conversao pronta.
-Future  makeSum(
-    {required double value,
-    required String key1,
-    required String key2,
-    required double currentValue}) async {
-
-  try {
-    Map apiResponse = await fetchExchangeRates();
+double makeSum(
+    {
+    required String? key1,
+    required String? key2,
+    required double currentValue}){
+    Map apiResponse = api_fetch.apiResponse;
     if (apiResponse.containsKey(key1) && apiResponse.containsKey(key2)) {
-      print('Api fetch');
+      dynamic rateFrom = apiResponse[key1];
+      dynamic rateTo = apiResponse[key2];
+      if (rateFrom is int){
+        rateFrom = double.tryParse(rateFrom.toString()) ?? 0.00;
+      }
+      if(rateTo is int){
+        rateTo = double.tryParse(rateTo.toString()) ?? 0.00;
+      } 
 
-      final double rateFrom = apiResponse[key1]!;
-      final double rateTo = apiResponse[key2]!;
-      final double convertedAmount = (currentValue / rateFrom) * rateTo;
+
+
+      //final double? rateFrom = double.tryParse((apiResponse[key1]));
+      
+      //final double? rateTo = double.tryParse((apiResponse[key2]));
+      
+      
+      final double convertedAmount = (currentValue / rateFrom!) * rateTo!;
+      
       return convertedAmount;
+    }else{
+      throw Exception('Erro');
     }
-  } catch (e) {
-    throw Exception('Erro ao buscar a taxa de câmbio: $e');
-  }
 }
